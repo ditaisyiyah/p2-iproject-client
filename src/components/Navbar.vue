@@ -2,37 +2,23 @@
   <section id="navbar" class="sticky-top">
     <div class="d-flex justify-content-between align-items-center">
       <div class="col d-flex justify-content-left align-items-end">
-        <div v-if="loginStatus" class="col-auto">
-          <img 
-            id="profile-picture"
-            v-bind:src="profile.picture"
-          >
+        <div class="col-auto">
+          <h4>UNIVERSE CODE</h4>
         </div>
-        <div v-if="loginStatus" class="col-auto">
-          <h5>Hi, {{ profile.username }} !</h5>
-        </div>
-      </div>
-      <div class="col justify-content-start text-center">
-        <h2>ASUMSI</h2>
       </div>
       <div class="col">
         <ul class="nav justify-content-end">
           <li class="nav-item">
-            <router-link to="/" class="nav-link"> Home </router-link>
+            <router-link to="/" class="nav-link"> HOME </router-link>
           </li>
-          <li v-if="loginStatus" class="nav-item">
-            <router-link to="/bookmark" class="nav-link"> 
-              My Bookmark <span class="badge bg-primary">{{ bookmarkLength }}</span> 
-            </router-link>
+          <li class="nav-item">
+            <router-link to="/news" class="nav-link"> NEWS </router-link>
           </li>
-          <li v-if="!loginStatus" class="nav-item">
-            <router-link to="/login" class="nav-link"> Log In </router-link>
-          </li>
-          <li v-if="loginStatus" class="nav-item">
+          <li class="nav-item">
             <a 
               v-on:click="userLogout"
               class="nav-link" 
-            >Log Out</a>
+            >LOG OUT</a>
           </li>
         </ul>
       </div>
@@ -41,18 +27,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
   export default {
-    name: 'Header',
+    name: 'Navbar',
+    computed: {
+      ...mapState(['profile', 'loginStatus']),
+    },
     created() {
       if(this.$store.state.loginStatus){
         this.$store.dispatch('fetchProfile');
-        this.$store.dispatch('fetchBookmark');
       }
-    },
-    computed: {
-      ...mapState(['profile', 'loginStatus']),
-      ...mapGetters(['bookmarkLength'])
     },
     methods: {
       userLogout(){
@@ -64,23 +48,27 @@ import { mapState, mapGetters } from 'vuex'
 
 <style scoped>
   #navbar {
-    z-index: 100;
+    position: fixed;
     width: 100vw;
+    /* min-height: 15vh; */
     height: auto;
     padding: 1.5vh 5vw 1.5vh 5vw;
-    margin-bottom: 5vh;
-    background: #2c2c54;
-    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+
+    /* background: rgba(0 ,0, 0, 0.3); */
   }
   a {
     text-decoration: none;
-    color: #ffffff;
+    color: #4414dd;
     font-weight: bold;
     cursor: pointer;
   }
   a:hover,
   a:focus {
-    color: #706fd3;
+    color: #ffffff;
+  }
+  li:hover{
+    background-color: #5b606c;
   }
   #profile-picture {
     vertical-align: middle;
@@ -89,7 +77,8 @@ import { mapState, mapGetters } from 'vuex'
     border-radius: 50%;
     object-fit: cover;
   }
-  h5 {
+  h4 {
+    color: #4414dd;
     padding-left: 1vw;
   }
 </style>

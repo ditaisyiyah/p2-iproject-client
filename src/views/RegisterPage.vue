@@ -1,27 +1,27 @@
 <template>
-  <section id="register-page" class="">
-    <div class="row mb-3 justify-content-center">
-      <h2 class="text-center">REGISTER</h2><br>
-    </div>
+  <section id="register-page">
     <form 
-      v-on:submit.prevent="userRegister" 
+      v-on:keydown.enter.prevent="userRegister" 
       id="register-form" 
       class="row justify-content-center"
     >
+      <h2 class="text-center">UNIVERSE CODE</h2><br>
+      <h3 class="text-center">REGISTER</h3><br>
       <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label class="form-label">Email</label><br>
           <input 
             v-model="email" 
             id="register-email" 
             class="form-control" 
             type="email"
+            autocomplete="off"
             required
           ><br>
         </div>
       </div>
       <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Password</label><br>
         <input 
           v-model="password" 
@@ -32,24 +32,8 @@
         ><br>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="d-grid gap-2 col-md-6 mb-3">
-          <button 
-            type="submit" 
-            class="btn btn-success"
-          >REGISTER</button>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="d-grid gap-2 col-md-3">
-          <router-link to="/login" class="btn btn-dark"> BACK </router-link>
-        </div>
-        <div class="d-grid gap-2 col-md-3">
-          <button 
-            type="submit" 
-            class="btn btn-danger"
-          >REGISTER</button>
-        </div>
+      <div class="d-grid gap-2 col-md-4 text-center">
+        <router-link to="/login" class="nav-link"> Back to login </router-link>
       </div>
     </form>
   </section>
@@ -78,8 +62,28 @@ export default {
 </script>
 
 <style scoped>
-  #regist-page {
-    min-height: 90vh;
-    padding: 5vh 5vw;
+  #register-page {
+    height: 100vh;
+    width: 100vw;
+    background-image: url('../assets/background2.jpeg') ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  #register-form {
+    padding: 25vh;
+  }
+  input, input:focus {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+  }
+  a {
+    text-decoration: none;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  a:hover,
+  a:focus {
+    color: #ffffff;
   }
 </style>

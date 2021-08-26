@@ -1,31 +1,38 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-    </div>
+    <Navbar v-if="this.$store.state.loginStatus" ></Navbar>
     <router-view/>
+    <!-- <HFooter></HFooter> -->
   </div>
 </template>
 
+<script>
+import Navbar from './components/Navbar.vue'
+// import HFooter from 'vue-hacktiv8-footer'
+export default {
+  name: 'App',
+  components: {
+    Navbar,  
+    // HFooter
+  },
+  created(){
+    const accessToken = localStorage.access_token ;
+    if(accessToken){
+      this.$store.commit('SET_LOGIN_STATUS', { status: true })
+    }else{
+      this.$store.commit('SET_LOGIN_STATUS', { status: false })
+    }
+  }
+}
+</script>
+
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  font-family: Helvetica, 'Source Sans Pro', 'Merriweather', serif, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background: #212121;
+  color: #ffffff;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
