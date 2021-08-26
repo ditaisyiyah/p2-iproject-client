@@ -29,7 +29,7 @@ export default {
 <style>
 #app {
   font-family: Helvetica, 'Source Sans Pro', 'Merriweather', serif, sans-serif;
-  width: 1005;
+  width: 100vw;
   height: 100vh;
   background: #212121;
   color: #ffffff;
@@ -46,5 +46,4 @@ export default {
   width: 3vw;
   height: 6vh;
 }
-
 </style>
