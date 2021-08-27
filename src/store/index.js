@@ -10,21 +10,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loginStatus: false,
-    profile: {},
     apodList: [], // array of objects
     apod: {}, // an object
     aneo: {}, // an object
-    news: [], // array of objects
+    newsList: [], // array of objects
 
   },
   mutations: {
     SET_LOGIN_STATUS(state, payload){
       state.loginStatus = payload.status;
       console.log('----been in state----',state.loginStatus);
-    },
-    SET_PROFILE(state, payload){
-      state.profile = payload.profile
-      console.log('----been in state----',state.profile);
     },
     SET_APOD(state, payload){
       state.apod = payload.apod
@@ -44,13 +39,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    toastError(){
-      // TODO
-    },
     doLogin(context, payload){
-      this.dispatch('fetchAneo');
       const asteroid = this.state.aneo;
-      console.log('==========asteroid siap, siapa usernya?', asteroid);
+      console.log('=====login=====asteroid siap, siapa usernya?', asteroid);
 
       host
       .post('/login', {
@@ -62,20 +53,8 @@ export default new Vuex.Store({
         console.log('=======logged in=======', resp.data);
         localStorage.setItem('access_token', resp.data.access_token);
         context.commit('SET_LOGIN_STATUS', { status: true });
-        this.dispatch('fetchProfile');
         
         router.push('/');
-
-        let now = new Date();
-        now = now.toISOString()
-        now = now.slice(0, now.indexOf('T'))
-        console.log('-------------today', now);
-        this.dispatch('fetchApod', now);
-        // console.log('INIIIIIIIIIIII',this.apod);
-        const apodTitle = this.state.apod.title;
-        const keywords = apodTitle.split(' ').join('-');
-        this.dispatch('fetchNews', keywords);
-
       })
       .catch(err => {
         console.log('=======error login=======', err);
@@ -84,29 +63,22 @@ export default new Vuex.Store({
       });
     },
     doRegister(context, payload){
+      const asteroid = this.state.aneo;
+      console.log('======regis====asteroid siap, siapa usernya?', asteroid);
+
       host
         .post('/register', {
           email: payload.email,
           password: payload.password,
+          asteroid
         })
         .then(resp => {
           console.log('=======registered=======', resp.data);
           localStorage.setItem('access_token', resp.data.access_token);
           context.commit('SET_LOGIN_STATUS', { status: true });
-          this.dispatch('fetchProfile');
 
           router.push('/');
-          
-          let now = new Date();
-          now = now.toISOString()
-          now = now.slice(0, now.indexOf('T'))
-          console.log('-------------today', now);
-          this.dispatch('fetchApod', now);
-          // console.log('INIIIIIIIIIIII',this.apod);
-          const apodTitle = this.state.apod.title;
-          const keywords = apodTitle.split(' ').join('-');
-          this.dispatch('fetchNews', keywords);
-
+        
         })
         .catch(err => {
           console.log('=======error register=======', err);
@@ -119,28 +91,14 @@ export default new Vuex.Store({
       context.commit('SET_LOGIN_STATUS', { status: false });
       router.push('/login');
     },
-    fetchProfile(context){
-      console.log('=========fetching profile=======');
-      host({
-        method: 'GET',
-        url: '/profile', 
-        headers: { access_token: localStorage.access_token }
-      })
-      .then(resp => {
-        console.log('=========fetched profile=======', resp.data);
-        const profile = resp.data;
-        context.commit('SET_PROFILE', { profile })
-      })
-      .catch(err => {
-        console.log('=========error profile========', err);
-        const message = err.response.data.message;
-        Vue.$toast.error(message);
-      });
-    },
     fetchApod(context, date){
-      console.log('=========fetching apod=======', date);
-      let params = { date };
-      if(!date) { 
+      let params = {};
+      
+      if(date){
+        console.log('=========fetching apod=======', date);
+        params = { date }
+      }else if(!date){
+        console.log('=========fetching apod List=======');
         const now = new Date()
         now.setDate(now.getDate() - 6)
         const start_date = now.toISOString();
@@ -156,8 +114,15 @@ export default new Vuex.Store({
       .then(resp => {
         console.log('=========fetched apod=======', resp.data);
         const apod = resp.data;
-        if(apod.length) context.commit('SET_APOD_LIST', { apodList: apod })
-        else context.commit('SET_APOD', { apod })
+        if(apod.length) {
+          context.commit('SET_APOD_LIST', { apodList: apod })
+        }else {
+          context.commit('SET_APOD', { apod })
+          
+          const apodTitle = this.state.apod.title;
+          const keywords = apodTitle?.split(' ')?.join('-') ?? '';
+          this.dispatch('fetchNews', keywords);
+        }
       })
       .catch(err => {
         console.log('=========error apod========', err);
@@ -184,6 +149,7 @@ export default new Vuex.Store({
     },
     fetchNews(context, keywords){
       console.log('=========fetching news=======', keywords);
+
       host({
         method: 'GET',
         url: '/news', 
@@ -194,6 +160,7 @@ export default new Vuex.Store({
         console.log('=========fetched news=======', resp.data);
         const newsList = resp.data;
         context.commit('SET_NEWS_LIST', { newsList })
+
       })
       .catch(err => {
         console.log('=========error news========', err);

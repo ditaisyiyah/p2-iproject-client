@@ -31,12 +31,7 @@ import { mapState } from 'vuex'
   export default {
     name: 'Navbar',
     computed: {
-      ...mapState(['profile', 'loginStatus']),
-    },
-    created() {
-      if(this.$store.state.loginStatus){
-        this.$store.dispatch('fetchProfile');
-      }
+      ...mapState(['loginStatus']),
     },
     methods: {
       userLogout(){
@@ -60,7 +55,9 @@ import { mapState } from 'vuex'
   a {
     text-decoration: none;
     color: #4414dd;
-    font-weight: bold;
+    font-family: sans-serif;
+    font-weight: bolder;
+    font-size: 13pt;
     cursor: pointer;
   }
   a:hover,
@@ -78,7 +75,9 @@ import { mapState } from 'vuex'
     object-fit: cover;
   }
   h4 {
-    color: #4414dd;
+    font-family: 'sans';
+    font-weight: bold;
+    color: #ffffff;
     padding-left: 1vw;
   }
 </style>

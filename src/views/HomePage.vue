@@ -1,23 +1,23 @@
 <template>
-  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div v-if="apodList" id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
-      <button v-for="picture in this.$store.state.apodList.slice(1)" v-bind:key="picture.id" type="button" data-bs-target="#myCarousel" v-bind:data-bs-slide-to="picture.id-1"></button>
+      <button v-for="picture in apodList.slice(1)" v-bind:key="picture.id" type="button" data-bs-target="#myCarousel" v-bind:data-bs-slide-to="picture.id - 1"></button>
     </div>
 
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img v-bind:src="this.$store.state.apodList[0].hdurl" class="d-block w-100" 
-        v-bind:alt="this.$store.state.apodList[0].title">
+        <img v-bind:src="apodList[0].hdurl" class="d-block w-100" 
+        v-bind:alt="apodList[0].title">
         <div class="carousel-caption d-none d-md-block">
           <p> 
-            <a v-bind:href="this.$store.state.apodList[0].hdurl">
-            {{ this.$store.state.apodList[0].title }} 
+            <a v-bind:href="apodList[0].hdurl">
+            {{ apodList[0].title }} 
             </a> 
           </p>
         </div>
       </div>
-      <div v-for="picture in this.$store.state.apodList.slice(1)" v-bind:key="picture.id" class="carousel-item">
+      <div v-for="picture in apodList.slice(1)" v-bind:key="picture.id" class="carousel-item">
         <img v-bind:src="picture.hdurl" class="d-block w-100" v-bind:alt="picture.title">
         <div class="carousel-caption d-none d-md-block">
           <p> 

@@ -8,7 +8,7 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 
 Vue.use(VueToast);
 
-Vue.prototype.$baseEndpoint = "https://ip-universe-code.herokuapp.com/";
+// Vue.prototype.$baseEndpoint = "https://ip-universe-code.herokuapp.com/";
 
 Vue.config.productionTip = false
 

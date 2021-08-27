@@ -5,7 +5,7 @@
         <input v-model="keywords" type="text" placeholder="Search..">
       </form>
     </div>
-    <div id="news">
+    <div v-if="newsList.length" id="news">
       <div class="card-deck">
         <div id="card" v-for="news in newsList" v-bind:key="news.id"
           class="col-auto mb-4">
@@ -39,7 +39,7 @@
 <script>
   import { mapState } from 'vuex'
   export default {
-    name: 'News',
+    name: 'NewsPage',
     data() {
       return {
         keywords: '',
@@ -49,16 +49,19 @@
       ...mapState(['newsList', 'apod']),
     },
     created() {
-      // console.log('INIIIIIIIIIIII',this.apod);
-      const apodTitle = this.apod.title;
-      const keywords = apodTitle.split(' ').join('-');
-
-      this.$store.dispatch('fetchNews', keywords);
+      // fetch news based on title of apod
+      let now = new Date();
+      now.setDate(now.getDate() - 1);
+      let today = now.toISOString()
+      // console.log('-------------today', today);
+      this.$store.dispatch('fetchApod', today);
+  
     },
     methods: {
+      // fetch news based on user input
       goSearch(){
-        const keywords = this.keywords.split(' ').join('-');
-        // console.log(keywords);
+        const keywords = this.keywords?.split(' ')?.join('-') ?? '';
+        // console.log('------cari news----',keywords);
         this.$store.dispatch('fetchNews', keywords);
       }
     },
@@ -76,8 +79,12 @@
     background-size: cover;
     background-position: center;
   }
-  input, input:focus {
+  input {
     background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  input:focus {
+    font-family: 'sans';
     color: #ffffff;
   }
   a {

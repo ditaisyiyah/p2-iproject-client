@@ -1,12 +1,11 @@
 <template>
   <section id="register-page">
+    <h2 class="text-center">UNIVERSE CODE</h2>
     <form 
-      v-on:keydown.enter.prevent="userRegister" 
+      v-on:submit.prevent="userRegister" 
       id="register-form" 
       class="row justify-content-center"
     >
-      <h2 class="text-center">UNIVERSE CODE</h2><br>
-      <h3 class="text-center">REGISTER</h3><br>
       <div class="row justify-content-center">
         <div class="col-md-4">
           <label class="form-label">Email</label><br>
@@ -32,6 +31,14 @@
         ><br>
         </div>
       </div>
+      <div class="row justify-content-center">
+        <div class="d-grid gap-2 col-md-4 mb-3">
+          <button 
+            type="submit" 
+            class="btn btn-success"
+          >REGISTER</button>
+        </div>
+      </div>
       <div class="d-grid gap-2 col-md-4 text-center">
         <router-link to="/login" class="nav-link"> Back to login </router-link>
       </div>
@@ -47,6 +54,9 @@ export default {
       email: '',
       password: '',
     }
+  },
+  created() {
+    this.$store.dispatch('fetchAneo')
   },
   methods : {
     userRegister(){
@@ -70,8 +80,15 @@ export default {
     background-size: cover;
     background-position: center;
   }
+  h2{
+    font-family: 'sans';
+    font-weight: bold;
+    padding-top: 14vh;
+    padding-bottom: 8vh;
+  }
   #register-form {
-    padding: 25vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2vh;
   }
   input, input:focus {
     background-color: rgba(0, 0, 0, 0.2);
@@ -80,10 +97,17 @@ export default {
   a {
     text-decoration: none;
     color: #ffffff;
-    cursor: pointer;
   }
-  a:hover,
-  a:focus {
+  a:hover {
     color: #ffffff;
+    font-weight: bold;
+  }
+  button:hover {
+    background-color: #2b1594;
+  }
+  button {
+    background-color: #4414dd;
+    border: #4414dd;
+    font-weight: bold;
   }
 </style>
